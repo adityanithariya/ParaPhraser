@@ -1,0 +1,16 @@
+# Cache folders
+__pycache__/
+migrations/
+cache/
+
+# Virtual environment
+venv/
+
+# Database
+db.*
+
+# Credentials
+.env
+
+# Other Files
+projectfiles
