@@ -9,25 +9,29 @@
 	<link rel="stylesheet" href="{% static 'css/base.css' %}">
 </head>
 <body>
-    <header class="align-center">
-		<span id="paraphraser">ParaPhraser</span>
+    <header class="align-center head" >
+		<span id="paraphraser"><h3>ParaPhraser</h3></span>
 		<span id="nav-items" class="align-center">
-			<a href="/python">Python</a>
-			<a href="/cpp">C++</a>
-			<a href="/java">Java</a>
+			<a class="nav {{python}}" href="/py">Python</a>
+			<a class="nav {{c}}" href="/c">C</a>
+			<a class="nav {{cpp}}" href="/cpp">C++</a>
+			<a class="nav {{java}}" href="/java">Java</a>
+			<a class="nav {{js}}" href="/js">Js</a>
+			<a class="nav {{r}}" href="/r">R</a>
+			<a class="nav {{go}}" href="/go">Go Lang</a>
+			<a class="nav {{ruby}}" href="/ruby">Ruby</a>
 		</span>
 	</header>
 	<main>
-		<form method="post">
+		<form method="post" id="form">
 			{% csrf_token %}
-			<div>
-				<button type="submit">Compile</button>
-			</div>
+		
 			<div class="align-center codeblock">
-				<textarea name="code" id="codearea" class="textarea">{{ code }}</textarea>
+				<textarea name="code" id="codearea" class="textarea" placeholder="write your code here...">{{ code }}</textarea>
 				
 				<textarea name="output" id="outputarea" class="textarea" disabled>{{ output }}</textarea>
 			</div>
+			<button type="submit"><img id="play-btn" src="{% static 'images/play-button.png' %}" alt=""></button>
 		</form>
 	</main>
 	<script src="{% static 'js/base.js' %}"></script>

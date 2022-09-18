@@ -1,11 +1,12 @@
 from django.shortcuts import render
-from subprocess import check_output, CalledProcessError
+from subprocess import STDOUT, check_output, CalledProcessError
 
 def pyCompiler(request):
 	if request.method == "GET":
 		context = {
 			"code": "",
-			"output": ""
+			"output": "",
+			"python": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -13,13 +14,16 @@ def pyCompiler(request):
 			f.write(request.POST["code"])
 		
 		try:
-			output = check_output(["python", "main.py"]).decode()
+			output = check_output(["python", "main.py"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
-			output = e.output
+			print("e: ", e.output.decode())
+			output = e.output.decode()
+			print("output: ", output)
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"python": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -27,7 +31,8 @@ def cCompiler(request):
 	if request.method == "GET":
 		context = {
 			"code": "#include <stdio.h>\n\nint main(){\n    \n    return 0;\n}\n",
-			"output": ""
+			"output": "",
+			"c": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -35,14 +40,15 @@ def cCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			check_output(["gcc", "main.c", "-o", "main"])
-			output = check_output(["./main.exe"]).decode()
+			check_output(["gcc", "main.c", "-o", "main"], stderr=STDOUT)
+			output = check_output(["./main.exe"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"c": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -50,7 +56,8 @@ def cppCompiler(request):
 	if request.method == "GET":
 		context = {
 			"code": "#include <iostream>\nusing namespace std;\n\nint main(){\n    \n    return 0;\n}\n",
-			"output": ""
+			"output": "",
+			"cpp": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -58,14 +65,15 @@ def cppCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			check_output(["g++", "main.cpp", "-o", "main"])
-			output = check_output(["./main.exe"]).decode()
+			check_output(["g++", "main.cpp", "-o", "main"], stderr=STDOUT)
+			output = check_output(["./main.exe"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"cpp": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -74,6 +82,7 @@ def javaCompiler(request):
 		context = {
 			"code": 'class Example{\n    public static void main(String[] args){\n        System.out.println("Hello World!");\n    }\n}\n',
 			"output": "",
+			"java": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -82,15 +91,16 @@ def javaCompiler(request):
 			f.write(request.POST["code"])
 		
 		try:
-			check_output(["javac", className + ".java"])
-			output = check_output(["java", className]).decode()
+			check_output(["javac", className + ".java"], stderr=STDOUT)
+			output = check_output(["java", className], stderr=STDOUT).decode()
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"java": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -99,6 +109,7 @@ def jsCompiler(request):
 		context = {
 			"code": 'console.log("Hello World!");',
 			"output": "",
+			"js": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -106,13 +117,14 @@ def jsCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			output = check_output(["node", "main.js"]).decode()
+			output = check_output(["node", "main.js"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"js": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -121,6 +133,7 @@ def rCompiler(request):
 		context = {
 			"code": '"Hello, World!"',
 			"output": "",
+			"r": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -128,15 +141,16 @@ def rCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			output = check_output(["Rscript", "main.R"]).decode()
+			output = check_output(["Rscript", "main.R"], stderr=STDOUT).decode()
 			context = {
 				"code": request.POST["code"],
 				"output": output,
+				"r": "active",
 			}
 			return render(request, "index.html", context=context)
 
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		if type(output) != str:
 			output = output.decode()
@@ -144,6 +158,7 @@ def rCompiler(request):
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"r": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -152,6 +167,7 @@ def goCompiler(request):
 		context = {
 			"code": 'package main\nimport "fmt"\nfunc main() {\n    fmt.Println("hello world")\n}',
 			"output": "",
+			"go": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -159,19 +175,21 @@ def goCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			output = check_output(["go", "run", "main.go"]).decode()
+			output = check_output(["go", "run", "main.go"], stderr=STDOUT).decode()
 			context = {
 				"code": request.POST["code"],
 				"output": output,
+				"go": "active",
 			}
 			return render(request, "index.html", context=context)
 
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"go": "active",
 		}
 		return render(request, "index.html", context=context)
 
@@ -180,6 +198,7 @@ def rubyCompiler(request):
 		context = {
 			"code": 'puts "Hello World!"',
 			"output": "",
+			"ruby": "active",
 		}
 		return render(request, "index.html", context=context)
 	if request.method == "POST":
@@ -187,18 +206,20 @@ def rubyCompiler(request):
 			f.write(request.POST["code"])
 
 		try:
-			output = check_output(["ruby", "main.rb"]).decode()
+			output = check_output(["ruby", "main.rb"], stderr=STDOUT).decode()
 			context = {
 				"code": request.POST["code"],
 				"output": output,
+				"ruby": "active",
 			}
 			return render(request, "index.html", context=context)
 
 		except CalledProcessError as e:
-			output = e.output
+			output = e.output.decode()
 
 		context = {
 			"code": request.POST["code"],
 			"output": output,
+			"ruby": "active",
 		}
 		return render(request, "index.html", context=context)
