@@ -12,5 +12,17 @@ db.*
 # Credentials
 .env
 
+# Program Files
+main.c
+main.cpp
+main.exe
+main.go
+main.js
+main.py
+main.R
+main.rb
+*.java
+*.class
+
 # Other Files
 projectfiles
