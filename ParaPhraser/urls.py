@@ -5,7 +5,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
 	# Apps
-	path("python/", include("PyPhraser.urls")),
+	path("", include("Phraser.urls")),
 ]
 
 from .settings import DEBUG

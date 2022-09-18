@@ -33,7 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
 	# Custom Apps
-	"PyPhraser",
+	"Phraser",
 
 	# Utitlity Apps
 	"debug_toolbar",
