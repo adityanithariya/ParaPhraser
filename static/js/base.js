@@ -1,3 +1,4 @@
+document.getElementById("codearea").focus()
 document.getElementById('codearea').addEventListener('keydown', function (e) {
   var start = this.selectionStart;
   var end = this.selectionEnd;
@@ -10,6 +11,15 @@ document.getElementById('codearea').addEventListener('keydown', function (e) {
 
     // put caret at right position again
     this.selectionStart = this.selectionEnd = start + 1;
+  }
+  if (e.code == "ShiftLeft" || e.code == "ShiftRight") {
+    Form = document.getElementById("form");
+  }
+  if (e.code == "Enter") {
+    // e.preventDefault();
+    try {
+      Form.submit()
+    } catch (error) {}
   }
   if (e.key == '(') {
     e.preventDefault();
