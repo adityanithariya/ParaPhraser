@@ -41,7 +41,7 @@ def cCompiler(request):
 
 		try:
 			check_output(["gcc", "main.c", "-o", "main"], stderr=STDOUT)
-			output = check_output(["./main.exe"], stderr=STDOUT).decode()
+			output = check_output(["./main"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
 			output = e.output.decode()
 
@@ -66,7 +66,7 @@ def cppCompiler(request):
 
 		try:
 			check_output(["g++", "main.cpp", "-o", "main"], stderr=STDOUT)
-			output = check_output(["./main.exe"], stderr=STDOUT).decode()
+			output = check_output(["./main"], stderr=STDOUT).decode()
 		except CalledProcessError as e:
 			output = e.output.decode()
 
